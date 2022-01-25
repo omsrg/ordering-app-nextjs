@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Seo from '@/components/Seo';
 import Hero from '@/components/Hero';
 import PizzaList from '@/components/PizzaList';
@@ -6,9 +5,7 @@ import PizzaList from '@/components/PizzaList';
 import axios from 'axios';
 // import OrderDetail from '@/components/OrderDetail';
 
-export default function Home({ pizzaList, admin }) {
-    const [close, setClose] = useState(true);
-
+export default function Home({ pizzaList }) {
     return (
         <>
             <Seo templateTitle='Home' />

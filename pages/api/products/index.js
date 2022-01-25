@@ -2,7 +2,7 @@ import dbConnect from '@/utils/dbConnect';
 import Product from '@/models/Product';
 
 const handler = async (req, res) => {
-    const { method, cookies } = req;
+    const { method } = req;
 
     // const token = cookies.token;
 
@@ -23,7 +23,7 @@ const handler = async (req, res) => {
         // }
 
         try {
-            const product = await Product.create(req.body);
+            await Product.create(req.body);
             res.status(201).json({ message: 'data sent successfully' });
         } catch (error) {
             res.status(500).json(error);

@@ -32,7 +32,7 @@ const Cart = () => {
             res.status === 201 && router.push('/order/' + res.data._id);
             dispatch(reset());
         } catch (error) {
-            console.log('GAGAL');
+            // console.log('GAGAL');
         }
     };
 
@@ -54,6 +54,7 @@ const Cart = () => {
                     currency: currency,
                 },
             });
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [currency, showSpinner]);
 
         return (

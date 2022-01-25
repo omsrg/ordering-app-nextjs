@@ -1,6 +1,3 @@
-import Image from 'next/image';
-// import clsx from 'clsx';
-
 const Hero = () => {
     return (
         <section className='bg-hero'>
@@ -10,13 +7,6 @@ const Hero = () => {
                     <p className='text-3xl mb-8'>Ready in 60 seconds</p>
                     <button className='button'>Place Order</button>
                 </div>
-                {/* <Image
-                    src='/images/pizza-3.png'
-                    alt=''
-                    width={720}
-                    height={580}
-                    priority={true}
-                /> */}
             </div>
         </section>
     );

@@ -4,7 +4,7 @@ import { reset } from '@/redux/cartSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import OrderDetail from '@/components/orderDetail';
+import OrderDetail from '@/components/OrderDetail';
 import {
     PayPalScriptProvider,
     PayPalButtons,

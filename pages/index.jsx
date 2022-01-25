@@ -30,7 +30,7 @@ export const getServerSideProps = async (context) => {
         admin = true;
     }
 
-    const response = await axios.get('http://localhost:3000/api/products');
+    const response = await axios.get(`${process.env.SITE_URL}/api/products`);
 
     return {
         props: {

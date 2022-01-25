@@ -9,9 +9,10 @@ const LoginPage = () => {
 
     const router = useRouter();
 
-    const handleClick = async () => {
+    const handleClick = async (e) => {
+        e.preventDefault();
         try {
-            await axios.post('http://localhost:3000/api/login', {
+            await axios.post(`/api/login`, {
                 username,
                 password,
             });

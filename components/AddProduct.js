@@ -45,7 +45,10 @@ const AddProduct = ({ setOpenModal }) => {
                 image: url,
             };
 
-            await axios.post('http://localhost:3000/api/products', newProduct);
+            await axios.post(
+                `${process.env.SITE_URL}/api/products`,
+                newProduct
+            );
             // console.log(res);
             setOpenModal(false);
         } catch (error) {
@@ -54,8 +57,8 @@ const AddProduct = ({ setOpenModal }) => {
     };
 
     return (
-        <div className='con'>
-            <div className='wr'>
+        <div className=''>
+            <div className=''>
                 <span onClick={() => setOpenModal(false)}>X</span>
                 <h2>Add a new Pizza</h2>
                 <div className='item'>

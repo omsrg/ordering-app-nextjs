@@ -5,15 +5,13 @@ const OrderDetail = ({ total, createOrder, onCancel }) => {
     const [customer, setCustomer] = useState('');
     const [address, setAddress] = useState('');
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault();
         createOrder({ customer, address, total, method: 0 });
     };
 
     return (
-        <div
-            className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-black bg-opacity-75 z-50'
-            onClick={onCancel}
-        >
+        <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-black bg-opacity-75 z-50'>
             <form className='relative w-[500px] bg-gray-100 rounded-md px-6 py-8 z-[100] text-dark'>
                 <div
                     className='absolute top-2 right-2 cursor-pointer'

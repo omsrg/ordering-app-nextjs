@@ -145,19 +145,10 @@ const Product = ({ pizza }) => {
     );
 };
 
-// const ingredients = [
-//     { label: 'Double Ingredients', name: 'double' },
-//     { label: 'Extra Cheese', name: 'cheese' },
-//     { label: 'Spicy Sauce', name: 'spicy' },
-//     { label: 'Garlic Sauce', name: 'garlic' },
-// ];
-
 export const getServerSideProps = async ({ params }) => {
     const response = await axios.get(
-        `http://localhost:3000/api/products/${params.id}`
+        `${process.env.SITE_URL}/api/products/${params.id}`
     );
-
-    // console.log(response.data.product);
 
     return {
         props: {

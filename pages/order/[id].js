@@ -11,12 +11,12 @@ const Order = ({ order }) => {
     };
 
     return (
-        <section className='bg-white'>
-            <div className='layout h-128 bg-white flex'>
+        <section className='bg-white max-w-screen-2xl py-10'>
+            <div className='layout h-128 bg-white flex flex-col gap-4 lg:flex-row md:items-center lg:items-start'>
                 {/* left side */}
-                <div className='left w-9/12 mt-10'>
-                    <div className='row'>
-                        <table className='w-full text-left mb-4 table-fixed'>
+                <div className='w-full lg:w-9/12'>
+                    <div className='overflow-auto'>
+                        <table className='w-full text-left'>
                             <thead className='bg-gray-200'>
                                 <tr className='text-dark text-left'>
                                     <th className='p-3 w-32 tracking-wider'>
@@ -57,7 +57,7 @@ const Order = ({ order }) => {
                         </table>
                     </div>
 
-                    <div className='w-[80%] flex justify-between mt-20'>
+                    <div className='md:w-[80%] flex justify-between mb-8 mt-10 lg:mt-20'>
                         {/* payment */}
                         <div className={statusClass(0)}>
                             <Image
@@ -66,7 +66,9 @@ const Order = ({ order }) => {
                                 height={30}
                                 alt=''
                             />
-                            <span>Payment</span>
+                            <span className='text-sm md:text-base'>
+                                Payment
+                            </span>
                             <div className='checked-icon'>
                                 <Image
                                     className=''
@@ -86,7 +88,9 @@ const Order = ({ order }) => {
                                 height={30}
                                 alt=''
                             />
-                            <span>Preparing</span>
+                            <span className='text-sm md:text-base'>
+                                Preparing
+                            </span>
                             <div className='checked-icon'>
                                 <Image
                                     className=''
@@ -106,7 +110,9 @@ const Order = ({ order }) => {
                                 height={30}
                                 alt=''
                             />
-                            <span>On the way</span>
+                            <span className='text-sm md:text-base'>
+                                On the way
+                            </span>
                             <div className='checked-icon'>
                                 <Image
                                     className=''
@@ -126,7 +132,9 @@ const Order = ({ order }) => {
                                 height={30}
                                 alt=''
                             />
-                            <span>Delivered</span>
+                            <span className='text-sm md:text-base'>
+                                Delivered
+                            </span>
                             <div className='checked-icon'>
                                 <Image
                                     className=''
@@ -141,8 +149,8 @@ const Order = ({ order }) => {
                 </div>
 
                 {/* right side */}
-                <div className='right w-3/12'>
-                    <div className='w-[90%] max-w-[300px] bg-[#333] p-4 m-10 flex flex-col justify-between text-white'>
+                <div className='w-full md:w-6/12 lg:w-3/12'>
+                    <div className=' bg-dark p-4 flex flex-col justify-between text-white'>
                         <h2 className=''>CART TOTAL</h2>
 
                         <div className=''>

@@ -97,11 +97,10 @@ const Cart = () => {
     };
 
     return (
-        <section className='bg-white'>
-            <div className='layout h-128 flex bg-white py-10 gap-4'>
-                <div className='w-9/12'>
-                    <table className='w-full '>
-                        {/* border-separate [border-spacing:1rem] */}
+        <section className='bg-white max-w-screen-2xl'>
+            <div className='layout flex flex-col md:items-center lg:items-start lg:flex-row bg-white py-10 gap-4'>
+                <div className='w-full lg:w-9/12 overflow-auto mb-6'>
+                    <table className='w-full'>
                         <thead className='bg-gray-200'>
                             <tr className='text-dark text-left'>
                                 <th className='p-3 w-20 tracking-wider'>
@@ -138,7 +137,7 @@ const Cart = () => {
                                                 src={product.product.image}
                                                 layout='fill'
                                                 objectFit='cover'
-                                                alt=''
+                                                alt={product.product.title}
                                             />
                                         </div>
                                     </td>
@@ -148,12 +147,19 @@ const Cart = () => {
                                         </span>
                                     </td>
                                     <td className='p-3'>
-                                        {product.extras.map((extra, idx) => (
-                                            <span key={extra._id} className=''>
-                                                {idx > 0 && ', '}
-                                                {extra.text}
-                                            </span>
-                                        ))}
+                                        {product.extras.length === 0 && (
+                                            <span>--</span>
+                                        )}
+                                        {product.extras &&
+                                            product.extras.map((extra, idx) => (
+                                                <span
+                                                    key={extra._id}
+                                                    className=''
+                                                >
+                                                    {idx > 0 && ', '}
+                                                    {extra.text}
+                                                </span>
+                                            ))}
                                     </td>
                                     <td className='p-3'>
                                         <span className=''>
@@ -176,8 +182,8 @@ const Cart = () => {
                     </table>
                 </div>
 
-                <div className='w-3/12 '>
-                    <div className='max-w-[300px] bg-dark p-4 flex flex-col justify-between text-white'>
+                <div className='md:w-6/12 lg:w-3/12 '>
+                    <div className='bg-dark p-4 flex flex-col justify-between text-white'>
                         <h2 className=''>CART TOTAL</h2>
                         <div className=''>
                             <b className='mr-2'>Subtotal:</b>${cart.total}

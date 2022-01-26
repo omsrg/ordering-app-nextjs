@@ -49,7 +49,7 @@ const Index = ({ orders, products, admin }) => {
     };
 
     return (
-        <section className='bg-white'>
+        <section className='bg-white max-w-screen-2xl'>
             <div className='layout bg-white flex flex-col gap-4 py-10'>
                 {admin && <AddButton setOpenModal={setOpenModal} />}
                 {/* {<AddButton setOpenModal={setOpenModal} />} */}

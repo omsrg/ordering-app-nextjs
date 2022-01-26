@@ -11,7 +11,7 @@ const OrderDetail = ({ total, createOrder, onCancel }) => {
     };
 
     return (
-        <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-black bg-opacity-75 z-50'>
+        <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-black bg-opacity-75 z-[100]'>
             <form className='relative w-[500px] bg-gray-100 rounded-md px-6 py-8 z-[100] text-dark'>
                 <div
                     className='absolute top-2 right-2 cursor-pointer'
@@ -63,7 +63,7 @@ const OrderDetail = ({ total, createOrder, onCancel }) => {
                 <div className='mt-6'>
                     <button
                         onClick={handleClick}
-                        className='py-2 px-4 bg-primary-500 w-full rounded-lg'
+                        className='py-2 px-4 bg-primary-500 w-full rounded-lg hover:bg-primary-100'
                     >
                         Order
                     </button>

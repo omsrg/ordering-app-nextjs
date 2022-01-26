@@ -4,7 +4,7 @@ import UnstyledLink from './Links/UnstyledLink';
 const PizzaCard = ({ pizza }) => {
     const { _id, title, image, prices, desc } = pizza;
     return (
-        <div className='w-1/4 flex flex-col justify-center p-2 border border-primary-400 m-4'>
+        <div className='md:mt-6 flex flex-col justify-center p-2 bg-[#1c1414] rounded-md'>
             <UnstyledLink href={`/product/${_id}`}>
                 <Image src={image} alt='' width={500} height={300} />
             </UnstyledLink>

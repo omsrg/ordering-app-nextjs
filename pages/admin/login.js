@@ -26,7 +26,7 @@ const LoginPage = () => {
     };
 
     return (
-        <section>
+        <section className='max-w-screen-2xl'>
             <div className='layout py-20 md:h-128 flex flex-col items-center'>
                 <form className='mt-4 p-6 bg-gray-100 rounded-md shadow-md flex flex-col items-center'>
                     {error && (

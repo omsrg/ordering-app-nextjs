@@ -1,14 +1,14 @@
 const Footer = () => {
     return (
-        <section className='bg-[#222]'>
+        <section className='bg-[#222] max-w-screen-2xl'>
             <div className='layout bg-[#222] flex py-10'>
-                <div className='w-full flex justify-center bg-[#222]'>
-                    <div className='w-7/12 flex flex-col'>
+                <div className='w-full flex flex-col sm:flex-row justify-between gap-y-6 bg-[#222]'>
+                    <div className='md:w-6/12 flex flex-col'>
                         <h4 className='text-[#b7903c]'>FIND OUR RESTAURANTS</h4>
 
-                        <div className='w-7/12 flex justify-between'>
-                            <div className='gap-16'>
-                                <p className='mt-2 text-gray-300'>
+                        <div className='flex flex-wrap justify-between'>
+                            <div className=''>
+                                <p className='mt-2 mr-8 text-gray-300'>
                                     1654 R. Don Road #304.
                                     <br /> NewYork, 85022
                                     <br /> (602) 867-1010
@@ -19,8 +19,8 @@ const Footer = () => {
                                     <br /> (602) 867-1011
                                 </p>
                             </div>
-                            <div className='gap-16'>
-                                <p className='mt-2 text-gray-300'>
+                            <div className=''>
+                                <p className='mt-2 mr-8 text-gray-300'>
                                     1614 E. Erwin St #104.
                                     <br /> NewYork, 85022
                                     <br /> (602) 867-1012
@@ -34,7 +34,7 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    <div className='w-5/12 px-2'>
+                    <div className='md:w-6/12flex flex-col items-end'>
                         <h4 className='text-[#b7903c]'>WORKING HOURS</h4>
                         <p className='mt-2 text-gray-300'>
                             MONDAY UNTIL FRIDAY

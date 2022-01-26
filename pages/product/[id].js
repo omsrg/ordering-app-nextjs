@@ -47,46 +47,48 @@ const Product = ({ pizza }) => {
     };
 
     return (
-        <section>
-            <div className='layout h-128 flex'>
-                <div className='w-6/12 flex items-center justify-center'>
-                    <div className='img w-[80%] h-[80%] relative'>
+        <section className='max-w-screen-2xl'>
+            <div className='layout md:h-128 grid md:grid-cols-2 md:gap-10 py-10'>
+                <div className='w-full mb-4'>
+                    <div className='w-full'>
                         <Image
                             src={image}
-                            objectFit='contain'
-                            layout='fill'
+                            objectFit='cover'
+                            // layout='fill'
                             alt={title}
+                            width={650}
+                            height={355}
                         />
                     </div>
                 </div>
 
-                <div className='right w-6/12 flex flex-col justify-center text-white'>
-                    <h1 className='text-3xl'>{title}</h1>
-                    <span className='text-2xl text-primary-400 font-normal underline underline-offset-4 '>
+                <div className='flex flex-col text-white'>
+                    <h1 className='text-lg md:text-3xl'>{title}</h1>
+                    <span className='text-lg md:text-2xl text-primary-400 font-normal underline underline-offset-4 '>
                         ${price}
                     </span>
                     <p className='py-2'>{desc}</p>
                     <h3 className='text-base pt-2'>Choose the size:</h3>
 
-                    <div className='flex space-x-16'>
+                    <div className='flex flex-wrap'>
                         {sizes.map((size, idx) => (
                             <div
                                 key={idx}
-                                className='self-end flex flex-col items-center cursor-pointer'
+                                className='self-end flex flex-col items-center mr-6 md:mr-8 cursor-pointer'
                                 onClick={() => handleSize(idx)}
                             >
                                 <GiFullPizza
                                     className={clsx(
                                         idx === chosenSize &&
                                             'text-primary-400',
-                                        size === 'small' && 'w-10 h-10',
-                                        size === 'medium' && 'w-12 h-12',
-                                        size === 'large' && 'w-14 h-14'
+                                        size === 'small' && 'w-8 h-8',
+                                        size === 'medium' && 'w-10 h-10',
+                                        size === 'large' && 'w-12 h-12'
                                     )}
                                 />
                                 <span
                                     className={clsx(
-                                        'text-base font-semibold text-dark bg-white px-4 mt-2 rounded-full',
+                                        'text-sm lg:text-base font-semibold text-dark bg-white px-4 mt-2 rounded-full',
                                         idx === chosenSize && 'bg-primary-400'
                                     )}
                                 >
@@ -99,7 +101,7 @@ const Product = ({ pizza }) => {
                     <h3 className='text-base pt-4 pb-2'>
                         Choose additional ingredients:{' '}
                     </h3>
-                    <div className='ingredents flex mb-8'>
+                    <div className='flex flex-wrap mb-8'>
                         {extraOptions.map((option) => (
                             <div
                                 key={option._id}
@@ -122,8 +124,8 @@ const Product = ({ pizza }) => {
                         ))}
                     </div>
 
-                    <div className='flex items-center'>
-                        <div className=''>
+                    <div className='flex flex-wrap items-center'>
+                        <div className='mr-4 mb-4'>
                             <span>Quantity:</span>
                             <input
                                 type='number'
@@ -132,10 +134,7 @@ const Product = ({ pizza }) => {
                                 className='w-[70px] h-[30px] focus:border-none text-dark appearance-none'
                             />
                         </div>
-                        <button
-                            className='button ml-4'
-                            onClick={handleAddToCart}
-                        >
+                        <button className='button ' onClick={handleAddToCart}>
                             Add to Cart
                         </button>
                     </div>

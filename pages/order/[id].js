@@ -169,7 +169,11 @@ const Order = ({ order }) => {
                             disabled
                             className='bg-white py-2 px-8 mt-2 cursor-not-allowed text-teal-500'
                         >
-                            PAID
+                            {order.status === 1 ? (
+                                <span>PAID</span>
+                            ) : (
+                                <span>CASH</span>
+                            )}
                         </button>
                     </div>
                 </div>

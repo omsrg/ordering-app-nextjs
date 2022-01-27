@@ -2,25 +2,55 @@ import Image from 'next/image';
 import axios from 'axios';
 import AddProduct from '@/components/AddProduct';
 import AddButton from '@/components/AddButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaAngleDoubleRight } from 'react-icons/fa';
+import ModalConfirm from '@/components/ModalConfirm';
+import Backdrop from '@/components/Backdrop';
+import Loading from '@/components/Loading';
 
-const Index = ({ orders, products, admin }) => {
+const Index = ({ admin }) => {
     const status = ['preparing', 'on the way', 'delivered'];
-    const [pizzaList, setPizzaList] = useState(products);
-    const [orderList, setOrderList] = useState(orders);
-    // const [deleted, setDeleted] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
+    const [pizzaList, setPizzaList] = useState([]);
+    const [orderList, setOrderList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [openModalProduct, setOpenModalProduct] = useState(false);
+    const [openModalConfirm, setOpenModalConfirm] = useState({
+        show: false,
+        id: null,
+    });
 
-    const handleDelete = async (id) => {
+    const fetchingData = async () => {
+        setIsLoading(true);
+        const [productRes, orderRes] = await axios.all([
+            axios.get(`/api/products`),
+            axios.get(`/api/orders`),
+        ]);
+        setPizzaList(productRes.data);
+        setOrderList(orderRes.data);
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        fetchingData();
+    }, []);
+
+    const openModalConfirmHandler = (id) => {
+        setOpenModalConfirm({ show: true, id });
+    };
+    const closeModalConfirmHandler = () => {
+        setOpenModalConfirm({ show: false, id: null });
+    };
+
+    const deleteHandler = async () => {
+        setIsLoading(true);
+        const { id } = openModalConfirm;
         try {
-            const res = await axios.delete(
-                `${process.env.SITE_URL}/api/products/` + id
-            );
+            const res = await axios.delete('/api/products/' + id);
 
             if (res.status === 200) {
                 setPizzaList(pizzaList.filter((pizza) => pizza._id !== id));
-                // setDeleted(true);
+                setOpenModalConfirm({ show: false, id: null });
+                setIsLoading(false);
             }
         } catch (error) {
             // console.log(error);
@@ -32,12 +62,9 @@ const Index = ({ orders, products, admin }) => {
         const currentStatus = item.status;
 
         try {
-            const res = await axios.put(
-                `${process.env.SITE_URL}/api/orders/` + id,
-                {
-                    status: currentStatus + 1,
-                }
-            );
+            const res = await axios.put('/api/orders/' + id, {
+                status: currentStatus + 1,
+            });
             setOrderList([
                 res.data,
                 ...orderList.filter((order) => order._id !== id),
@@ -49,22 +76,34 @@ const Index = ({ orders, products, admin }) => {
     };
 
     return (
-        <section className='bg-white max-w-screen-2xl'>
+        <section className='bg-white max-w-screen-2xl py-10'>
+            {isLoading && <Loading />}
+            {admin && <AddButton setOpenModal={setOpenModalProduct} />}
+            {openModalProduct && (
+                <AddProduct setOpenModal={setOpenModalProduct} />
+            )}
+
+            {openModalConfirm.show && (
+                <ModalConfirm
+                    onCancel={closeModalConfirmHandler}
+                    onConfirm={deleteHandler}
+                />
+            )}
+            {openModalConfirm.show && (
+                <Backdrop onCancel={closeModalConfirmHandler} />
+            )}
             <div className='layout bg-white flex flex-col gap-4 py-10'>
-                {admin && <AddButton setOpenModal={setOpenModal} />}
-                {/* {<AddButton setOpenModal={setOpenModal} />} */}
-                {openModal && <AddProduct setOpenModal={setOpenModal} />}
-                <div className='w-8/12'>
+                <div className='w-full lg:w-10/12 overflow-auto'>
                     <h1 className='text-3xl'>Products</h1>
-                    <table className='w-full table-fixed mt-4'>
+                    <table className='w-full table-auto mt-4'>
                         <thead className='bg-gray-200'>
                             <tr className='text-dark text-left'>
                                 <th className='p-1 w-10 tracking-wider'>
                                     Image
                                 </th>
-                                <th className='p-1 w-10 tracking-wider'>Id</th>
+                                <th className='p-1 w-32 tracking-wider'>Id</th>
                                 <th className='p-1 w-20 tracking-wider'>
-                                    Title
+                                    Product name
                                 </th>
                                 <th className='p-1 w-10 tracking-wider'>
                                     Price
@@ -88,12 +127,10 @@ const Index = ({ orders, products, admin }) => {
                                                 width={50}
                                                 height={50}
                                                 objectFit='cover'
-                                                alt=''
+                                                alt={`an image of ${product.title}`}
                                             />
                                         </td>
-                                        <td className='p-1'>
-                                            {product._id.slice(0, 5)}...
-                                        </td>
+                                        <td className='p-1'>{product._id}</td>
                                         <td className='p-1'>{product.title}</td>
                                         <td className='p-1'>
                                             ${product.prices[0]}
@@ -109,7 +146,9 @@ const Index = ({ orders, products, admin }) => {
                                             <button
                                                 className='bg-red-500 px-2 py-1 rounded-sm hover:bg-red-400'
                                                 onClick={() =>
-                                                    handleDelete(product._id)
+                                                    openModalConfirmHandler(
+                                                        product._id
+                                                    )
                                                 }
                                             >
                                                 <div className='flex items-center space-x-2 text-dark'>
@@ -124,13 +163,13 @@ const Index = ({ orders, products, admin }) => {
                     </table>
                 </div>
 
-                <div className='w-9/12 mt-10'>
+                <div className='w-full mt-10 overflow-auto'>
                     <h1 className='text-3xl'>Orders</h1>
-                    <table className='w-full table-fixed mt-4'>
+                    <table className='w-full table-auto mt-4'>
                         <thead className='bg-gray-200'>
                             <tr className='text-dark text-left'>
-                                <th className='p-1 w-10 tracking-wider'>Id</th>
-                                <th className='p-1 w-20 tracking-wider'>
+                                <th className='p-1 w-20 tracking-wider'>Id</th>
+                                <th className='p-1 w-16 tracking-wider'>
                                     Customer
                                 </th>
                                 <th className='p-1 w-10 tracking-wider'>
@@ -155,9 +194,7 @@ const Index = ({ orders, products, admin }) => {
                                         key={order._id}
                                         className='odd:bg-gray-100 even:bg-gray-200'
                                     >
-                                        <td className='p-1'>
-                                            {order._id.slice(0, 5)}...
-                                        </td>
+                                        <td className='p-1'>{order._id}</td>
                                         <td className='p-1'>
                                             {order.customer}
                                         </td>
@@ -210,13 +247,8 @@ export const getServerSideProps = async (context) => {
         admin = true;
     }
 
-    const productRes = await axios.get(`${process.env.SITE_URL}/api/products`);
-    const orderRes = await axios.get(`${process.env.SITE_URL}/api/orders`);
-
     return {
         props: {
-            orders: orderRes.data,
-            products: productRes.data,
             admin,
         },
     };

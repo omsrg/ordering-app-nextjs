@@ -58,9 +58,23 @@
         max-width: 80rem;
         @apply w-11/12 mx-auto;
     }
+}
 
+@layer components {
     .button {
         @apply py-4 px-16 border-none rounded-sm bg-primary-500 text-white hover:bg-primary-400 hover:text-dark transition-colors duration-200;
+    }
+
+    .btn {
+        @apply py-2 px-6 cursor-pointer rounded-md mx-4 border bg-primary-400 text-dark border-primary-400;
+    }
+
+    .btn:hover {
+        @apply bg-[#f6ae12] text-dark transition-colors;
+    }
+
+    .btn--alt {
+        @apply bg-transparent text-primary-400;
     }
 }
 

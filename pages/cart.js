@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import OrderDetail from '@/components/OrderDetail';
+import Loading from '@/components/Loading';
 import {
     PayPalScriptProvider,
     PayPalButtons,
@@ -21,19 +22,23 @@ const Cart = () => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [cash, setCash] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const createOrder = async (data) => {
+        setCash(false);
+        setIsLoading(true);
         try {
             const res = await axios.post(`/api/orders`, data);
             res.status === 201 && router.push('/order/' + res.data._id);
             dispatch(reset());
+            setIsLoading(false);
         } catch (error) {
             // console.log(error);
         }
     };
 
-    const cancelHandler = () => {
+    const closeModal = () => {
         setCash(false);
     };
 
@@ -203,20 +208,22 @@ const Cart = () => {
                                 >
                                     Cash On Delivery
                                 </button>
-                                <PayPalScriptProvider
-                                    options={{
-                                        'client-id':
-                                            'AYtpebju8878tFhMQWLyGg7dEaHl7UCnDGboFK0wWFIXHSSiVHtNsSRsJ1SGO0XShlv6X6KRopVcrUzk',
-                                        components: 'buttons',
-                                        currency: 'USD',
-                                        'disable-funding': 'card',
-                                    }}
-                                >
-                                    <ButtonWrapper
-                                        currency={currency}
-                                        showSpinner={false}
-                                    />
-                                </PayPalScriptProvider>
+                                <div className='w-full h-10 bg-red-4'>
+                                    <PayPalScriptProvider
+                                        options={{
+                                            'client-id':
+                                                'AYtpebju8878tFhMQWLyGg7dEaHl7UCnDGboFK0wWFIXHSSiVHtNsSRsJ1SGO0XShlv6X6KRopVcrUzk',
+                                            components: 'buttons',
+                                            currency: 'USD',
+                                            'disable-funding': 'card',
+                                        }}
+                                    >
+                                        <ButtonWrapper
+                                            currency={currency}
+                                            showSpinner={false}
+                                        />
+                                    </PayPalScriptProvider>
+                                </div>
                             </div>
                         ) : (
                             <button
@@ -229,11 +236,12 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
+            {isLoading && <Loading />}
             {cash && (
                 <OrderDetail
                     total={cart.total}
                     createOrder={createOrder}
-                    onCancel={cancelHandler}
+                    closeModal={closeModal}
                 />
             )}
         </section>

@@ -2,7 +2,7 @@ import UnstyledLink from '@/components/Links/UnstyledLink';
 
 const NotFoundPage = () => {
     return (
-        <section className='bg-white max-w-screen-2xl'>
+        <section className='max-w-screen-2xl'>
             <div className='layout h-128 flex flex-col items-center justify-center text-white'>
                 <h1>Page Not Found</h1>
                 <UnstyledLink

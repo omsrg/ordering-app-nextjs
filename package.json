@@ -19,10 +19,12 @@
     "cookie": "^0.4.1",
     "mongoose": "^6.1.7",
     "next": "12",
+    "nprogress": "^0.2.0",
     "postcss": "^8.4.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
+    "react-loader-spinner": "^5.1.0",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2"
   },

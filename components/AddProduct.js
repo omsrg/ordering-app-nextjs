@@ -45,10 +45,7 @@ const AddProduct = ({ setOpenModal }) => {
                 image: url,
             };
 
-            await axios.post(
-                `${process.env.SITE_URL}/api/products`,
-                newProduct
-            );
+            await axios.post(`/api/products`, newProduct);
             // console.log(res);
             setOpenModal(false);
         } catch (error) {

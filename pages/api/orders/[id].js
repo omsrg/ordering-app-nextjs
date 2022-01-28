@@ -14,7 +14,7 @@ const handler = async (req, res) => {
             const order = await Order.findById(id);
             res.status(200).json(order);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).json({ message: 'data not found' });
         }
     }
 

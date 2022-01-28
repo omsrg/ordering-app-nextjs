@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
+import { FaTrash } from 'react-icons/fa';
+import Loading from '@/components/Loading';
 
 const TrackOrderPage = () => {
-    const [orderList, setOrderList] = useState({});
-    const status = orderList.status;
+    const [orderData, setOrderData] = useState({});
+    const [isError, setIsError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const status = orderData.status;
+    const inputRef = useRef();
 
     const statusClass = (index) => {
         if (index - status < 1) return 'done';
@@ -12,32 +17,79 @@ const TrackOrderPage = () => {
         if (index - status > 1) return 'undone';
     };
 
-    // useEffect(() => {
-    //     const getOrderData = async (id) => {
-    //         try {
-    //             const response = await axios.get('/api/orders/' + id);
-    //             if (response.status === 201) {
-    //                 setOrderList(response.data);
-    //             }
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-    //     getOrderData();
-    // }, []);
+    const getOrderData = async () => {
+        const enteredId = inputRef.current.value;
+
+        if (enteredId === '') {
+            setIsError(true);
+            return;
+        }
+        setIsLoading(true);
+
+        try {
+            const response = await axios.get(`/api/orders/${enteredId}`);
+            if (response.data === '') {
+                setIsError(true);
+            }
+            setOrderData(response.data);
+            setIsLoading(false);
+        } catch (error) {
+            setIsError(true);
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isError) {
+            const timer = setTimeout(() => {
+                setIsError(false);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [isError]);
 
     return (
-        <section className='bg-white'>
-            <div className='layout h-128 py-20'>
-                <div className='w-9/12 mx-auto flex items-center justify-center'>
-                    <input
-                        name='order-id'
-                        type='text'
-                        placeholder='input your order id here...'
-                        className='w-full ml-4 rounded-md shadow-lg border-gray-300 focus:border-primary-400 focus:ring-primary-400'
-                    />
+        <section className='relative bg-white'>
+            {isLoading && <Loading />}
+
+            <div className='layout py-32'>
+                <div className='md:w-9/12 mx-auto flex flex-col items-center'>
+                    <div className='w-full relative flex items-center'>
+                        <input
+                            type='text'
+                            placeholder='Please enter your order id...'
+                            ref={inputRef}
+                            className='w-full rounded-md shadow-lg inline-block border-gray-300 focus:border-gray-300 focus:ring-gray-300'
+                        />
+                        <button
+                            className='absolute right-2'
+                            onClick={() => (inputRef.current.value = '')}
+                        >
+                            <FaTrash className='w-6 h-6  text-gray-400 ' />
+                        </button>
+                    </div>
+                    <button
+                        className='py-3 px-6 w-32 mt-6 rounded-md text-white bg-primary-500 hover:bg-primary-100'
+                        onClick={getOrderData}
+                    >
+                        Search
+                    </button>
                 </div>
-                <div className='md:w-[80%] flex justify-between mt-12 mb-8'>
+
+                <div className='mt-6 w-5/12 mx-auto flex text-dark bg-gray-200 p-4 rounded-md'>
+                    <div className='text-right'>
+                        <p>Order id :</p>
+                        <p>Customer :</p>
+                    </div>
+
+                    <div className='flex flex-col ml-4'>
+                        <span>{orderData._id}</span>
+                        <span>{orderData.customer}</span>
+                    </div>
+                </div>
+
+                <div className='md:w-[70%] flex justify-between mt-16 mx-auto'>
                     {/* payment */}
                     <div className={statusClass(0)}>
                         <Image
@@ -119,6 +171,13 @@ const TrackOrderPage = () => {
                     </div>
                 </div>
             </div>
+
+            {isError && (
+                // orderData ===
+                <div className='absolute bg-red-300 w-48 top-10 left-[calc(50%_-_6rem)] py-2 rounded-md shadow-md flex justify-center'>
+                    <span className='text-red-700'>Order not found!</span>
+                </div>
+            )}
         </section>
     );
 };

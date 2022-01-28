@@ -18,9 +18,6 @@ const LoginPage = () => {
             });
             router.push('/admin');
         } catch (error) {
-            // console.log('username:', username);
-            // console.log('password:', password);
-            // console.log(error);
             setError(true);
         }
     };

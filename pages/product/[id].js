@@ -47,8 +47,8 @@ const Product = ({ pizza }) => {
     };
 
     return (
-        <section className='max-w-screen-2xl'>
-            <div className='layout md:h-128 grid md:grid-cols-2 md:gap-10 py-10'>
+        <section className='max-w-screen-2xl mt-[80px]'>
+            <div className='layout md:h-screen grid md:grid-cols-2 md:gap-10 py-10'>
                 <div className='w-full mb-4'>
                     <div className='w-full'>
                         <Image
@@ -125,8 +125,8 @@ const Product = ({ pizza }) => {
                     </div>
 
                     <div className='flex flex-wrap items-center'>
-                        <div className='mr-4 mb-4'>
-                            <span>Quantity:</span>
+                        <div className='mr-4 my-4'>
+                            <span>Quantity: </span>
                             <input
                                 type='number'
                                 defaultValue={1}

@@ -23,8 +23,8 @@ const LoginPage = () => {
     };
 
     return (
-        <section className='max-w-screen-2xl'>
-            <div className='layout py-20 md:h-128 flex flex-col items-center'>
+        <section className='max-w-screen-2xl mt-10'>
+            <div className='layout py-20 h-screen flex flex-col items-center'>
                 <form className='mt-4 p-6 bg-gray-100 rounded-md shadow-md flex flex-col items-center'>
                     {error && (
                         <span className='text-red-500 bg-red-200 w-full text-center py-2 rounded-md'>

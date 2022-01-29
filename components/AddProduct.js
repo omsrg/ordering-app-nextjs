@@ -1,13 +1,26 @@
+import { useState, useRef } from 'react';
+import Image from 'next/image';
 import axios from 'axios';
-import { useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
+import Loading from './Loading';
 
 const AddProduct = ({ setOpenModal }) => {
+    const [chosenImage, setChosenImage] = useState(null);
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState(null);
     const [desc, setDesc] = useState(null);
     const [prices, setPrices] = useState([]);
     const [extra, setExtra] = useState(null);
     const [extraOptions, setExtraOptions] = useState([]);
+    const targetFile = useRef(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleUpload = (e) => {
+        e.preventDefault();
+        const uploadedImage = e.target.files[0];
+        setFile(uploadedImage);
+        setChosenImage(URL.createObjectURL(uploadedImage));
+    };
 
     const changePrice = (e, index) => {
         const currentPrices = prices;
@@ -24,6 +37,7 @@ const AddProduct = ({ setOpenModal }) => {
     };
 
     const handleCreate = async () => {
+        setIsLoading(true);
         const data = new FormData();
         data.append('file', file);
         data.append('upload_preset', 'ordering-app');
@@ -32,9 +46,6 @@ const AddProduct = ({ setOpenModal }) => {
                 'https://api.cloudinary.com/v1_1/gryffin/image/upload',
                 data
             );
-
-            // console.log('url:', uploadRes.data.url);
-            // console.log(typeof uploadRes.data.secure_url);
 
             const url = uploadRes.data.secure_url;
             const newProduct = {
@@ -46,82 +57,128 @@ const AddProduct = ({ setOpenModal }) => {
             };
 
             await axios.post(`/api/products`, newProduct);
-            // console.log(res);
             setOpenModal(false);
+            setIsLoading(false);
         } catch (error) {
             // console.log('failed upload data', error);
         }
     };
 
     return (
-        <div className=''>
-            <div className=''>
-                <span onClick={() => setOpenModal(false)}>X</span>
-                <h2>Add a new Pizza</h2>
-                <div className='item'>
-                    <label htmlFor='image'>Choose an Image</label>
+        <div className='flex justify-center'>
+            {isLoading && <Loading />}
+            <form
+                className='relative bg-gray-200 p-4 shadow-md rounded-md flex-col justify-center'
+                onSubmit={(e) => e.preventDefault()}
+            >
+                <div className='absolute top-4 right-4 cursor-pointer'>
+                    <FaTimes
+                        className='w-8 h-8'
+                        onClick={() => setOpenModal(false)}
+                    />
+                </div>
+                <h2 className='text-2xl text-center'>Add a new Pizza</h2>
+                <div className='flex flex-col w-1/4 items-center'>
+                    <div className='mb-2 w-52 flex items-center justify-center text-sm'>
+                        {file !== null && (
+                            <Image
+                                src={chosenImage}
+                                objectFit='cover'
+                                width={200}
+                                height={200}
+                                alt=''
+                            />
+                        )}
+                    </div>
+                    {file !== null ? (
+                        <span className='mb-1'>{file.name}</span>
+                    ) : (
+                        <span>No file chosen</span>
+                    )}
                     <input
                         type='file'
-                        onChange={(e) => setFile(e.target.files[0])}
+                        className='hidden'
+                        ref={targetFile}
+                        onChange={(e) => handleUpload(e)}
                     />
+                    <button
+                        className='px-4 py-1 w-max text-white bg-primary-500 rounded-md shadow-md'
+                        onClick={() => targetFile.current.click()}
+                    >
+                        Choose an Image
+                    </button>
                 </div>
 
-                <div className='item'>
+                <div className='mt-3'>
                     <label htmlFor='title'>Title</label>
-                    <input
-                        type='text'
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
+                    <div className='mt-1'>
+                        <input
+                            type='text'
+                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                    </div>
                 </div>
 
-                <div className='item'>
+                <div className='mt-3'>
                     <label htmlFor='desc'>Description</label>
-                    <input
-                        type='text'
-                        onChange={(e) => setDesc(e.target.value)}
-                    />
+                    <div className='mt-1'>
+                        <input
+                            type='text'
+                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            onChange={(e) => setDesc(e.target.value)}
+                        />
+                    </div>
                 </div>
 
-                <div className='item'>
+                <div className='mt-3'>
                     <label htmlFor='prices'>Prices</label>
-                    <input
-                        type='number'
-                        placeholder='small'
-                        onChange={(e) => changePrice(e, 0)}
-                        className=''
-                    />
-                    <input
-                        type='number'
-                        placeholder='medium'
-                        onChange={(e) => changePrice(e, 1)}
-                        className=''
-                    />
-                    <input
-                        type='number'
-                        placeholder='large'
-                        onChange={(e) => changePrice(e, 2)}
-                        className=''
-                    />
+                    <div className='mt-1 space-x-1'>
+                        <input
+                            type='number'
+                            placeholder='small'
+                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            onChange={(e) => changePrice(e, 0)}
+                        />
+                        <input
+                            type='number'
+                            placeholder='medium'
+                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            onChange={(e) => changePrice(e, 1)}
+                        />
+                        <input
+                            type='number'
+                            placeholder='large'
+                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            onChange={(e) => changePrice(e, 2)}
+                        />
+                    </div>
                 </div>
 
-                <div className='item'>
+                <div className='mt-3'>
                     <label htmlFor='desc'>Extra</label>
-                    <div className='ex'>
+                    <div className=''>
                         <input
                             type='text'
                             placeholder='item'
                             name='text'
                             onChange={handleExtraInput}
-                            className=''
+                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400 mr-1'
                         />
                         <input
                             type='number'
                             placeholder='price'
                             name='price'
                             onChange={handleExtraInput}
-                            className=''
+                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
                         />
-                        <button onClick={handleExtra}>Add</button>
+
+                        <button
+                            className='ml-8 px-6 py-2 bg-primary-500 text-white rounded-md shadow-sm hover:bg-opacity-75'
+                            onClick={handleExtra}
+                        >
+                            add extra
+                        </button>
                     </div>
 
                     <div>
@@ -133,8 +190,15 @@ const AddProduct = ({ setOpenModal }) => {
                         ))}
                     </div>
                 </div>
-                <button onClick={handleCreate}>Create</button>
-            </div>
+                <div className='mt-10'>
+                    <button
+                        className='button rounded-lg w-full'
+                        onClick={handleCreate}
+                    >
+                        ADD NEW PRODUCT
+                    </button>
+                </div>
+            </form>
         </div>
     );
 };

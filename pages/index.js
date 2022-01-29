@@ -3,7 +3,6 @@ import Hero from '@/components/Hero';
 import PizzaList from '@/components/PizzaList';
 
 import axios from 'axios';
-// import OrderDetail from '@/components/OrderDetail';
 
 export default function Home({ pizzaList }) {
     return (
@@ -14,8 +13,6 @@ export default function Home({ pizzaList }) {
                 <section className=''>
                     <Hero />
                     <PizzaList pizzaList={pizzaList} />
-
-                    {/* <OrderDetail /> */}
                 </section>
             </main>
         </>

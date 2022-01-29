@@ -11,8 +11,8 @@ const Order = ({ order }) => {
     };
 
     return (
-        <section className='bg-white max-w-screen-2xl py-10'>
-            <div className='layout h-128 bg-white flex flex-col gap-4 lg:flex-row md:items-center lg:items-start'>
+        <section className='bg-white max-w-screen-2xl py-32'>
+            <div className='layout min-h-screen bg-white flex flex-col gap-4 lg:flex-row md:items-center lg:items-start'>
                 {/* left side */}
                 <div className='w-full lg:w-9/12'>
                     <div className='overflow-auto'>

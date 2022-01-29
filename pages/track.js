@@ -50,7 +50,7 @@ const TrackOrderPage = () => {
     }, [isError]);
 
     return (
-        <section className='relative bg-white'>
+        <section className='relative bg-white mt-[80px]'>
             {isLoading && <Loading />}
 
             <div className='layout py-32'>
@@ -77,15 +77,15 @@ const TrackOrderPage = () => {
                     </button>
                 </div>
 
-                <div className='mt-6 w-5/12 mx-auto flex text-dark bg-gray-200 p-4 rounded-md'>
-                    <div className='text-right'>
+                <div className='mt-6 mx-auto w-max flex text-dark bg-gray-200 p-4 rounded-md'>
+                    <div className='flex flex-col text-right'>
                         <p>Order id :</p>
                         <p>Customer :</p>
                     </div>
 
-                    <div className='flex flex-col ml-4'>
-                        <span>{orderData._id}</span>
-                        <span>{orderData.customer}</span>
+                    <div className='flex flex-col'>
+                        <span className='ml-2'>{orderData._id}</span>
+                        <span className='ml-2'>{orderData.customer}</span>
                     </div>
                 </div>
 

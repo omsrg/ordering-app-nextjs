@@ -2,20 +2,16 @@
 import UnstyledLink from '@/components/Links/UnstyledLink';
 import { CgMenuRight } from 'react-icons/cg';
 import { BsArrowLeft, BsCart3 } from 'react-icons/bs';
-import Navbar from './Navbar';
-import MobileNavigation from './MobileNavigation';
+import NavLinks from './NavLinks';
 
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
 
-const MainNavigation = () => {
+const MainNavigation = ({ mobileNavHandler, isMenuOpen }) => {
     const quantity = useSelector((state) => state.cart.quantity);
 
-    const [isOpen, setIsOpen] = useState(false);
-
     return (
-        <section className='relative bg-primary-500'>
-            <div className='layout h-[80px] flex items-center justify-between sticky top-0 z-20'>
+        <header className='w-full h-[80px] fixed bg-primary-500 top-0 z-50'>
+            <div className='layout h-[80px] flex items-center justify-between  '>
                 <div className='md:w-3/12'>
                     <UnstyledLink href='/'>
                         <h1 className='text-4xl lg:text-6xl text-primary-400 font-kanit'>
@@ -24,7 +20,11 @@ const MainNavigation = () => {
                     </UnstyledLink>
                 </div>
 
-                <Navbar />
+                <div className='md:w-6/12 hidden md:block'>
+                    <ul className='flex items-center justify-center text-white divide-x'>
+                        <NavLinks />
+                    </ul>
+                </div>
 
                 <div className='flex'>
                     <div className='relative mx-8'>
@@ -37,9 +37,9 @@ const MainNavigation = () => {
                     </div>
                     <div
                         className='cursor-pointer text-white md:hidden'
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={mobileNavHandler}
                     >
-                        {isOpen ? (
+                        {isMenuOpen ? (
                             <BsArrowLeft className='w-8 h-8' />
                         ) : (
                             <CgMenuRight className='w-8 h-8' />
@@ -53,10 +53,7 @@ const MainNavigation = () => {
                     Login as admin
                 </UnstyledLink>
             </div>
-            {isOpen && (
-                <MobileNavigation isOpen={isOpen} setIsOpen={setIsOpen} />
-            )}
-        </section>
+        </header>
     );
 };
 

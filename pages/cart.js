@@ -102,8 +102,8 @@ const Cart = () => {
     };
 
     return (
-        <section className='bg-white max-w-screen-2xl'>
-            <div className='layout flex flex-col md:items-center lg:items-start lg:flex-row bg-white py-10 gap-4'>
+        <section className='bg-white max-w-screen-2xl mt-20'>
+            <div className='layout min-h-screen flex flex-col md:items-center lg:items-start lg:flex-row bg-white py-10 gap-4'>
                 <div className='w-full lg:w-9/12 overflow-auto mb-6'>
                     <table className='w-full'>
                         <thead className='bg-gray-200'>

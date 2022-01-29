@@ -76,22 +76,29 @@ const Index = ({ admin }) => {
     };
 
     return (
-        <section className='bg-white max-w-screen-2xl py-10'>
-            {isLoading && <Loading />}
-            {admin && <AddButton setOpenModal={setOpenModalProduct} />}
-            {openModalProduct && (
-                <AddProduct setOpenModal={setOpenModalProduct} />
-            )}
-
-            {openModalConfirm.show && (
-                <ModalConfirm
-                    onCancel={closeModalConfirmHandler}
-                    onConfirm={deleteHandler}
-                />
-            )}
-            {openModalConfirm.show && (
-                <Backdrop onCancel={closeModalConfirmHandler} />
-            )}
+        <section className='bg-white max-w-screen-2xl mt-32'>
+            <div className='layout'>
+                {isLoading && <Loading />}
+                {admin && <AddButton setOpenModal={setOpenModalProduct} />}
+                <button
+                    onClick={fetchingData}
+                    className='ml-6 px-4 py-1 bg-gray-300 rounded-md shadow-md'
+                >
+                    Refresh Data
+                </button>
+                {openModalProduct && (
+                    <AddProduct setOpenModal={setOpenModalProduct} />
+                )}
+                {openModalConfirm.show && (
+                    <ModalConfirm
+                        onCancel={closeModalConfirmHandler}
+                        onConfirm={deleteHandler}
+                    />
+                )}
+                {openModalConfirm.show && (
+                    <Backdrop onCancel={closeModalConfirmHandler} />
+                )}
+            </div>
             <div className='layout bg-white flex flex-col gap-4 py-10'>
                 <div className='w-full lg:w-10/12 overflow-auto'>
                     <h1 className='text-3xl'>Products</h1>

@@ -38,6 +38,10 @@ const Cart = () => {
         }
     };
 
+    const onCancel = () => {
+        setIsLoading(false);
+    };
+
     const closeModal = () => {
         setCash(false);
     };
@@ -236,7 +240,7 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
-            {isLoading && <LoadingSpinner />}
+            {isLoading && <LoadingSpinner onCancel={onCancel} />}
             {cash && (
                 <OrderDetail
                     total={cart.total}

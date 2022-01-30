@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import { FaTimes } from 'react-icons/fa';
-import Loading from './Loading';
+import LoadingSpinner from '../LoadingSpinner';
 
 const AddProduct = ({ setOpenModal }) => {
     const [chosenImage, setChosenImage] = useState(null);
@@ -66,7 +66,7 @@ const AddProduct = ({ setOpenModal }) => {
 
     return (
         <div className='flex justify-center'>
-            {isLoading && <Loading />}
+            {isLoading && <LoadingSpinner />}
             <form
                 className='relative bg-gray-200 p-4 shadow-md rounded-md flex-col justify-center'
                 onSubmit={(e) => e.preventDefault()}

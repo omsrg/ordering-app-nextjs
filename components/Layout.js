@@ -3,7 +3,7 @@ import Footer from './Footer';
 
 import MobileNavigation from '@/components/Navigation/MobileNavigation';
 import { useState, useEffect } from 'react';
-import Backdrop from './Backdrop';
+import Backdrop from './Modals/Backdrop';
 
 function Layout(props) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

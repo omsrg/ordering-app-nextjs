@@ -35,6 +35,14 @@ const MainNavigation = ({ mobileNavHandler, isMenuOpen }) => {
                             </span>
                         </UnstyledLink>
                     </div>
+
+                    <UnstyledLink
+                        href='/admin/login'
+                        className='text-white font-light text-sm hover:underline hidden md:block'
+                    >
+                        Login as admin
+                    </UnstyledLink>
+
                     <div
                         className='cursor-pointer text-white md:hidden'
                         onClick={mobileNavHandler}
@@ -46,12 +54,6 @@ const MainNavigation = ({ mobileNavHandler, isMenuOpen }) => {
                         )}
                     </div>
                 </div>
-                <UnstyledLink
-                    href='/admin/login'
-                    className='text-white font-light text-sm hover:underline hidden md:block'
-                >
-                    Login as admin
-                </UnstyledLink>
             </div>
         </header>
     );

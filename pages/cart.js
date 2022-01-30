@@ -4,8 +4,8 @@ import { reset } from '@/redux/cartSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import OrderDetail from '@/components/OrderDetail';
-import Loading from '@/components/Loading';
+import OrderDetail from '@/components/Modals/OrderDetail';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import {
     PayPalScriptProvider,
     PayPalButtons,
@@ -236,7 +236,7 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
-            {isLoading && <Loading />}
+            {isLoading && <LoadingSpinner />}
             {cash && (
                 <OrderDetail
                     total={cart.total}

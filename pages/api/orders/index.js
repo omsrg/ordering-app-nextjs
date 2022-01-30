@@ -1,4 +1,4 @@
-import dbConnect from '@/utils/dbConnect';
+import dbConnect from '@/lib/dbConnect';
 import Order from '@/models/Order';
 
 const handler = async (req, res) => {

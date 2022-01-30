@@ -1,7 +1,7 @@
 // import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Oval } from 'react-loader-spinner';
 
-const Loading = () => {
+const LoadingSpinner = () => {
     return (
         <div className='fixed w-full h-screen top-0 left-0 bg-black bg-opacity-75 flex items-center justify-center z-[300]'>
             <Oval
@@ -16,4 +16,4 @@ const Loading = () => {
     );
 };
 
-export default Loading;
+export default LoadingSpinner;

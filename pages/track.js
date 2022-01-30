@@ -1,21 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import axios from 'axios';
 import { FaTrash } from 'react-icons/fa';
-import Loading from '@/components/Loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import OrderStatus from '@/components/OrderStatus';
 
 const TrackOrderPage = () => {
     const [orderData, setOrderData] = useState({});
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const status = orderData.status;
     const inputRef = useRef();
-
-    const statusClass = (index) => {
-        if (index - status < 1) return 'done';
-        if (index - status === 1) return 'in-progress';
-        if (index - status > 1) return 'undone';
-    };
 
     const getOrderData = async () => {
         const enteredId = inputRef.current.value;
@@ -51,9 +44,9 @@ const TrackOrderPage = () => {
 
     return (
         <section className='relative bg-white mt-[80px]'>
-            {isLoading && <Loading />}
+            {isLoading && <LoadingSpinner />}
 
-            <div className='layout py-32'>
+            <div className='layout py-32 min-h-screen'>
                 <div className='md:w-9/12 mx-auto flex flex-col items-center'>
                     <div className='w-full relative flex items-center'>
                         <input
@@ -77,103 +70,28 @@ const TrackOrderPage = () => {
                     </button>
                 </div>
 
-                <div className='mt-6 mx-auto w-max flex text-dark bg-gray-200 p-4 rounded-md'>
-                    <div className='flex flex-col text-right'>
-                        <p>Order id :</p>
-                        <p>Customer :</p>
-                    </div>
+                {!(Object.keys(orderData).length === 0) && (
+                    <div className='mt-6 mx-auto w-max flex text-dark bg-gray-200 p-4 rounded-md'>
+                        <div className='flex flex-col text-right'>
+                            <p>Order id :</p>
+                            <p>Customer :</p>
+                        </div>
 
-                    <div className='flex flex-col'>
-                        <span className='ml-2'>{orderData._id}</span>
-                        <span className='ml-2'>{orderData.customer}</span>
-                    </div>
-                </div>
-
-                <div className='md:w-[70%] flex justify-between mt-16 mx-auto'>
-                    {/* payment */}
-                    <div className={statusClass(0)}>
-                        <Image
-                            src='/images/paid.png'
-                            width={30}
-                            height={30}
-                            alt=''
-                        />
-                        <span className='text-sm md:text-base'>Payment</span>
-                        <div className='checked-icon'>
-                            <Image
-                                className=''
-                                src='/images/checked.png'
-                                width={20}
-                                height={20}
-                                alt=''
-                            />
+                        <div className='flex flex-col'>
+                            <span className='ml-2'>{orderData._id}</span>
+                            <span className='ml-2'>{orderData.customer}</span>
                         </div>
                     </div>
+                )}
 
-                    {/* preparing */}
-                    <div className={statusClass(1)}>
-                        <Image
-                            src='/images/bake.png'
-                            width={30}
-                            height={30}
-                            alt=''
-                        />
-                        <span className='text-sm md:text-base'>Preparing</span>
-                        <div className='checked-icon'>
-                            <Image
-                                className=''
-                                src='/images/checked.png'
-                                width={20}
-                                height={20}
-                                alt=''
-                            />
-                        </div>
+                {!(Object.keys(orderData).length === 0) && (
+                    <div className='md:w-[70%] flex justify-between mt-14 mx-auto'>
+                        <OrderStatus status={orderData.status} />
                     </div>
-
-                    {/* on the way */}
-                    <div className={statusClass(2)}>
-                        <Image
-                            src='/images/bike.png'
-                            width={30}
-                            height={30}
-                            alt=''
-                        />
-                        <span className='text-sm md:text-base'>On the way</span>
-                        <div className='checked-icon'>
-                            <Image
-                                className=''
-                                src='/images/checked.png'
-                                width={20}
-                                height={20}
-                                alt=''
-                            />
-                        </div>
-                    </div>
-
-                    {/* delivered */}
-                    <div className={statusClass(3)}>
-                        <Image
-                            src='/images/delivered.png'
-                            width={30}
-                            height={30}
-                            alt=''
-                        />
-                        <span className='text-sm md:text-base'>Delivered</span>
-                        <div className='checked-icon'>
-                            <Image
-                                className=''
-                                src='/images/checked.png'
-                                width={20}
-                                height={20}
-                                alt=''
-                            />
-                        </div>
-                    </div>
-                </div>
+                )}
             </div>
 
             {isError && (
-                // orderData ===
                 <div className='absolute bg-red-300 w-48 top-10 left-[calc(50%_-_6rem)] py-2 rounded-md shadow-md flex justify-center'>
                     <span className='text-red-700'>Order not found!</span>
                 </div>

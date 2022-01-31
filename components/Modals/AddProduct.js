@@ -65,7 +65,7 @@ const AddProduct = ({ setOpenModal }) => {
     };
 
     return (
-        <div className='flex justify-center'>
+        <div className='flex justify-center mt-6'>
             {isLoading && <LoadingSpinner />}
             <form
                 className='relative bg-gray-200 p-4 shadow-md rounded-md flex-col justify-center'
@@ -77,8 +77,8 @@ const AddProduct = ({ setOpenModal }) => {
                         onClick={() => setOpenModal(false)}
                     />
                 </div>
-                <h2 className='text-2xl text-center'>Add a new Pizza</h2>
-                <div className='flex flex-col w-1/4 items-center'>
+                <h2 className='text-2xl text-center mb-4'>Add a new Pizza</h2>
+                <div className='flex flex-col w- items-'>
                     <div className='mb-2 w-52 flex items-center justify-center text-sm'>
                         {file !== null && (
                             <Image
@@ -114,7 +114,7 @@ const AddProduct = ({ setOpenModal }) => {
                     <div className='mt-1'>
                         <input
                             type='text'
-                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            className='w-full md:w-max border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
                             onChange={(e) => setTitle(e.target.value)}
                         />
                     </div>
@@ -125,7 +125,7 @@ const AddProduct = ({ setOpenModal }) => {
                     <div className='mt-1'>
                         <input
                             type='text'
-                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            className='w-full md:w-max border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
                             onChange={(e) => setDesc(e.target.value)}
                         />
                     </div>
@@ -133,23 +133,23 @@ const AddProduct = ({ setOpenModal }) => {
 
                 <div className='mt-3'>
                     <label htmlFor='prices'>Prices</label>
-                    <div className='mt-1 space-x-1'>
+                    <div className='mt-1'>
                         <input
                             type='number'
                             placeholder='small'
-                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            className='w-full md:w-max mb-2 md:mr-1 border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
                             onChange={(e) => changePrice(e, 0)}
                         />
                         <input
                             type='number'
                             placeholder='medium'
-                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            className='w-full md:w-max mb-2 md:mr-1 border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
                             onChange={(e) => changePrice(e, 1)}
                         />
                         <input
                             type='number'
                             placeholder='large'
-                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            className='w-full md:w-max border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
                             onChange={(e) => changePrice(e, 2)}
                         />
                     </div>
@@ -163,18 +163,18 @@ const AddProduct = ({ setOpenModal }) => {
                             placeholder='item'
                             name='text'
                             onChange={handleExtraInput}
-                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400 mr-1'
+                            className='w-full md:w-max border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400 mr-1 mb-2'
                         />
                         <input
                             type='number'
                             placeholder='price'
                             name='price'
                             onChange={handleExtraInput}
-                            className='border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400'
+                            className='w-full md:w-max border-gray-300 rounded-lg shadow-sm focus:border-primary-400 focus:ring-primary-400 mb-2 mr-8'
                         />
 
                         <button
-                            className='ml-8 px-6 py-2 bg-primary-500 text-white rounded-md shadow-sm hover:bg-opacity-75'
+                            className=' px-6 py-2 bg-primary-500 text-white rounded-md shadow-sm hover:bg-opacity-75'
                             onClick={handleExtra}
                         >
                             add extra

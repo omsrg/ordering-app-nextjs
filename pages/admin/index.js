@@ -74,7 +74,7 @@ const Index = ({ admin }) => {
                 )}
                 <button
                     onClick={fetchingData}
-                    className='ml-6 px-4 py-1 bg-gray-300 rounded-md shadow-md'
+                    className='px-4 py-1 bg-gray-300 rounded-md shadow-md mt-2'
                 >
                     Refresh Data
                 </button>

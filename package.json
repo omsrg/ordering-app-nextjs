@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^7.5.1",
-    "@reduxjs/toolkit": "^1.7.1",
     "@tailwindcss/forms": "^0.4.0",
     "autoprefixer": "^10.4.2",
     "axios": "^0.25.0",
@@ -24,9 +23,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
-    "react-loader-spinner": "^5.1.0",
-    "react-redux": "^7.2.6",
-    "redux": "^4.1.2"
+    "react-loader-spinner": "^5.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",

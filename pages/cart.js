@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { reset } from '@/redux/cartSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -12,14 +10,16 @@ import {
     usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 
+import { useCartContext } from '@/context/CartContext';
+
 const Cart = () => {
-    const cart = useSelector((state) => state.cart);
+    const { state, dispatch } = useCartContext();
     // This values are the props in the UI
-    const amount = cart.total;
+    const amount = state.total;
     const currency = 'USD';
     const style = { layout: 'vertical' };
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [cash, setCash] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,7 @@ const Cart = () => {
         try {
             const res = await axios.post(`/api/orders`, data);
             res.status === 201 && router.push('/order/' + res.data._id);
-            dispatch(reset());
+            dispatch({ type: 'CLEAR_PRODUCT' });
             setIsLoading(false);
         } catch (error) {
             // console.log(error);
@@ -95,7 +95,7 @@ const Cart = () => {
                             createOrder({
                                 customer: shipping.name.full_name,
                                 address: shipping.address.address_line_1,
-                                total: cart.total,
+                                total: state.total,
                                 method: 1,
                             });
                         });
@@ -135,7 +135,7 @@ const Cart = () => {
                         </thead>
 
                         <tbody className='divide-y'>
-                            {cart.products.map((product) => (
+                            {state.products.map((product) => (
                                 <tr
                                     key={product.product._id}
                                     className='text-dark odd:bg-gray-100 even:bg-gray-200'
@@ -195,13 +195,13 @@ const Cart = () => {
                     <div className='bg-dark p-4 flex flex-col justify-between text-white'>
                         <h2 className=''>CART TOTAL</h2>
                         <div className=''>
-                            <b className='mr-2'>Subtotal:</b>${cart.total}
+                            <b className='mr-2'>Subtotal:</b>${state.total}
                         </div>
                         <div className=''>
                             <b className='mr-2'>Discount:</b>$0.00
                         </div>
                         <div className=''>
-                            <b className='mr-2'>Total:</b>${cart.total}
+                            <b className='mr-2'>Total:</b>${state.total}
                         </div>
 
                         {open ? (
@@ -243,7 +243,7 @@ const Cart = () => {
             {isLoading && <LoadingSpinner onCancel={onCancel} />}
             {cash && (
                 <OrderDetail
-                    total={cart.total}
+                    total={state.total}
                     createOrder={createOrder}
                     closeModal={closeModal}
                 />

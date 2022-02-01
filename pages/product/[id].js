@@ -2,22 +2,20 @@ import { useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { addProduct } from '@/redux/cartSlice';
 import { GiFullPizza } from 'react-icons/gi';
+import { useCartContext } from '@/context/CartContext';
 
 const Product = ({ pizza }) => {
     const { image, title, desc, prices, extraOptions } = pizza.product;
 
-    const sizes = ['small', 'medium', 'large'];
+    const { dispatch } = useCartContext();
 
+    const sizes = ['small', 'medium', 'large'];
     const [size, setSize] = useState(0);
     const [chosenSize, setChosenSize] = useState(0);
     const [price, setPrice] = useState(prices[0]);
     const [quantity, setQuantity] = useState(1);
     const [extras, setExtras] = useState([]);
-
-    const dispatch = useDispatch();
 
     const changePrice = (number) => {
         setPrice((prevPrice) => prevPrice + number);
@@ -43,7 +41,10 @@ const Product = ({ pizza }) => {
     };
 
     const handleAddToCart = () => {
-        dispatch(addProduct({ ...pizza, extras, price, quantity }));
+        dispatch({
+            type: 'ADD_PRODUCT',
+            payload: { ...pizza, extras, price, quantity },
+        });
     };
 
     return (
@@ -54,7 +55,6 @@ const Product = ({ pizza }) => {
                         <Image
                             src={image}
                             objectFit='cover'
-                            // layout='fill'
                             alt={title}
                             width={650}
                             height={355}

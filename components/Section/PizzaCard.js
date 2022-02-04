@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import UnstyledLink from './Links/UnstyledLink';
+import UnstyledLink from '@/components/Links/UnstyledLink';
 
 const PizzaCard = ({ pizza }) => {
     const { _id, title, image, prices, desc } = pizza;

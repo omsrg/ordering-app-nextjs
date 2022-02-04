@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { FaTrash } from 'react-icons/fa';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import OrderStatus from '@/components/OrderStatus';
+import OrderStatus from '@/components/Section/OrderStatus';
 
 const TrackOrderPage = () => {
     const [orderData, setOrderData] = useState({});

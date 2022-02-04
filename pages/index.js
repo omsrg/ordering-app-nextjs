@@ -1,6 +1,6 @@
 import Seo from '@/components/Seo';
-import Hero from '@/components/Hero';
-import PizzaList from '@/components/PizzaList';
+import Hero from '@/components/Section/Hero';
+import PizzaList from '@/components/Section/PizzaList';
 
 import axios from 'axios';
 

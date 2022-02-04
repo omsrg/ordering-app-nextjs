@@ -1,5 +1,5 @@
 import axios from 'axios';
-import OrderStatus from '@/components/OrderStatus';
+import OrderStatus from '@/components/Section/OrderStatus';
 
 const Order = ({ order }) => {
     return (

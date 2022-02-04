@@ -1,5 +1,5 @@
 import MainNavigation from '@/components/Navigation/MainNavigation';
-import Footer from './Footer';
+import Footer from '@/components/Section/Footer';
 
 import MobileNavigation from '@/components/Navigation/MobileNavigation';
 import { useState, useEffect } from 'react';

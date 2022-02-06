@@ -4,18 +4,18 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import OrderDetail from '@/components/Modals/OrderDetail';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useCartContext } from '@/context/CartContext';
+import { FaTrash } from 'react-icons/fa';
 import {
     PayPalScriptProvider,
     PayPalButtons,
     usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 
-import { useCartContext } from '@/context/CartContext';
-
 const Cart = () => {
-    const { state, dispatch } = useCartContext();
+    const { products, reset, total, removeFromCart } = useCartContext();
     // This values are the props in the UI
-    const amount = state.total;
+    const amount = total;
     const currency = 'USD';
     const style = { layout: 'vertical' };
 
@@ -30,8 +30,8 @@ const Cart = () => {
         setIsLoading(true);
         try {
             const res = await axios.post(`/api/orders`, data);
-            res.status === 201 && router.push('/order/' + res.data._id);
-            dispatch({ type: 'CLEAR_PRODUCT' });
+            res.status === 201 && router.replace('/order/' + res.data._id);
+            reset();
             setIsLoading(false);
         } catch (error) {
             // console.log(error);
@@ -44,6 +44,10 @@ const Cart = () => {
 
     const closeModal = () => {
         setCash(false);
+    };
+
+    const handleRemove = (item) => {
+        removeFromCart(item);
     };
 
     // Custom component to wrap the PayPalButtons and handle currency changes
@@ -95,7 +99,7 @@ const Cart = () => {
                             createOrder({
                                 customer: shipping.name.full_name,
                                 address: shipping.address.address_line_1,
-                                total: state.total,
+                                total: total,
                                 method: 1,
                             });
                         });
@@ -112,78 +116,60 @@ const Cart = () => {
                     <table className='w-full'>
                         <thead className='bg-gray-200'>
                             <tr className='text-dark text-left'>
-                                <th className='p-3 w-20 tracking-wider'>
-                                    Product
-                                </th>
-                                <th className='p-3 w-32 tracking-wider'>
-                                    Name
-                                </th>
-                                <th className='p-3 w-40 tracking-wider'>
-                                    {' '}
-                                    Extras
-                                </th>
-                                <th className='p-3 w-20 tracking-wider'>
-                                    Price
-                                </th>
-                                <th className='p-3 w-20 tracking-wider'>
-                                    Quantity
-                                </th>
-                                <th className='p-3 w-20 tracking-wider'>
-                                    Total
-                                </th>
+                                <th className='p-3 w-20 tracking-wider'>Product</th>
+                                <th className='p-3 w-32 tracking-wider'>Name</th>
+                                <th className='p-3 w-40 tracking-wider'> Extras</th>
+                                <th className='p-3 w-20 tracking-wider'>Price</th>
+                                <th className='p-3 w-20 tracking-wider'>Quantity</th>
+                                <th className='p-3 w-20 tracking-wider'>Total</th>
+                                <th className='p-3 w-20 tracking-wider'>action</th>
                             </tr>
                         </thead>
 
                         <tbody className='divide-y'>
-                            {state.products.map((product) => (
+                            {products.map((product) => (
                                 <tr
-                                    key={product.product._id}
+                                    key={product._id}
                                     className='text-dark odd:bg-gray-100 even:bg-gray-200'
                                 >
                                     <td className='p3'>
                                         <div className='w-[100px] h-[100px] relative flex justify-center'>
                                             <Image
-                                                src={product.product.image}
+                                                src={product.image}
                                                 layout='fill'
                                                 objectFit='cover'
-                                                alt={product.product.title}
+                                                alt={product.title}
                                             />
                                         </div>
                                     </td>
                                     <td className='p-3'>
-                                        <span className='font-semibold'>
-                                            {product.product.title}
-                                        </span>
+                                        <span className='font-semibold'>{product.title}</span>
                                     </td>
                                     <td className='p-3'>
-                                        {product.extras.length === 0 && (
-                                            <span>--</span>
-                                        )}
+                                        {product.extras.length === 0 && <span>--</span>}
                                         {product.extras &&
                                             product.extras.map((extra, idx) => (
-                                                <span
-                                                    key={extra._id}
-                                                    className=''
-                                                >
+                                                <span key={extra._id} className=''>
                                                     {idx > 0 && ', '}
                                                     {extra.text}
                                                 </span>
                                             ))}
                                     </td>
+                                    <td className='p-3'>${product.price}</td>
+                                    <td className='p-3'>{product.quantity}</td>
+                                    <td className='p-3'>${product.price * product.quantity}</td>
                                     <td className='p-3'>
-                                        <span className=''>
-                                            ${product.price}
-                                        </span>
-                                    </td>
-                                    <td className='p-3'>
-                                        <span className=''>
-                                            {product.quantity}
-                                        </span>
-                                    </td>
-                                    <td className='p-3'>
-                                        <span className=''>
-                                            ${product.price * product.quantity}
-                                        </span>
+                                        <button
+                                            className='cursor-pointer '
+                                            onClick={() => handleRemove(product)}
+                                        >
+                                            <div className='flex items-center space-x-1 text-red-500'>
+                                                <FaTrash className='w-4 h-4 sm:w-5 sm:h-5' />
+                                                <span className='text-sm text-red-600 hover:text-red-500'>
+                                                    Remove
+                                                </span>
+                                            </div>
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -195,13 +181,13 @@ const Cart = () => {
                     <div className='bg-dark p-4 flex flex-col justify-between text-white'>
                         <h2 className=''>CART TOTAL</h2>
                         <div className=''>
-                            <b className='mr-2'>Subtotal:</b>${state.total}
+                            <b className='mr-2'>Subtotal:</b>${total}
                         </div>
                         <div className=''>
                             <b className='mr-2'>Discount:</b>$0.00
                         </div>
                         <div className=''>
-                            <b className='mr-2'>Total:</b>${state.total}
+                            <b className='mr-2'>Total:</b>${total}
                         </div>
 
                         {open ? (
@@ -222,10 +208,7 @@ const Cart = () => {
                                             'disable-funding': 'card',
                                         }}
                                     >
-                                        <ButtonWrapper
-                                            currency={currency}
-                                            showSpinner={false}
-                                        />
+                                        <ButtonWrapper currency={currency} showSpinner={false} />
                                     </PayPalScriptProvider>
                                 </div>
                             </div>
@@ -242,11 +225,7 @@ const Cart = () => {
             </div>
             {isLoading && <LoadingSpinner onCancel={onCancel} />}
             {cash && (
-                <OrderDetail
-                    total={state.total}
-                    createOrder={createOrder}
-                    closeModal={closeModal}
-                />
+                <OrderDetail total={total} createOrder={createOrder} closeModal={closeModal} />
             )}
         </section>
     );

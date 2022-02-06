@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import axios from 'axios';
 import { GiFullPizza } from 'react-icons/gi';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useCartContext } from '@/context/CartContext';
 
 const Product = ({ pizza }) => {
-    const { image, title, desc, prices, extraOptions } = pizza.product;
+    const { _id, image, title, desc, prices, extraOptions } = pizza.product;
 
-    const { dispatch } = useCartContext();
+    const { products, addToCart, removeFromCart } = useCartContext();
 
     const sizes = ['small', 'medium', 'large'];
     const [size, setSize] = useState(0);
@@ -16,6 +17,17 @@ const Product = ({ pizza }) => {
     const [price, setPrice] = useState(prices[0]);
     const [quantity, setQuantity] = useState(1);
     const [extras, setExtras] = useState([]);
+    const [isInCart, setIsInCart] = useState(false);
+
+    useEffect(() => {
+        const productIsInCart = products.find((product) => product._id === _id);
+
+        if (productIsInCart) {
+            setIsInCart(true);
+        } else {
+            setIsInCart(false);
+        }
+    }, [products, _id]);
 
     const changePrice = (number) => {
         setPrice((prevPrice) => prevPrice + number);
@@ -41,10 +53,13 @@ const Product = ({ pizza }) => {
     };
 
     const handleAddToCart = () => {
-        dispatch({
-            type: 'ADD_PRODUCT',
-            payload: { ...pizza, extras, price, quantity },
-        });
+        const product = { ...pizza.product, extras, price, quantity };
+
+        if (isInCart) {
+            removeFromCart(product);
+        } else {
+            addToCart(product);
+        }
     };
 
     return (
@@ -52,13 +67,7 @@ const Product = ({ pizza }) => {
             <div className='layout md:h-screen grid md:grid-cols-2 md:gap-10 py-10'>
                 <div className='w-full mb-4'>
                     <div className='w-full'>
-                        <Image
-                            src={image}
-                            objectFit='cover'
-                            alt={title}
-                            width={650}
-                            height={355}
-                        />
+                        <Image src={image} objectFit='cover' alt={title} width={650} height={355} />
                     </div>
                 </div>
 
@@ -79,8 +88,7 @@ const Product = ({ pizza }) => {
                             >
                                 <GiFullPizza
                                     className={clsx(
-                                        idx === chosenSize &&
-                                            'text-primary-400',
+                                        idx === chosenSize && 'text-primary-400',
                                         size === 'small' && 'w-8 h-8',
                                         size === 'medium' && 'w-10 h-10',
                                         size === 'large' && 'w-12 h-12'
@@ -98,9 +106,7 @@ const Product = ({ pizza }) => {
                         ))}
                     </div>
 
-                    <h3 className='text-base pt-4 pb-2'>
-                        Choose additional ingredients:{' '}
-                    </h3>
+                    <h3 className='text-base pt-4 pb-2'>Choose additional ingredients: </h3>
                     <div className='flex flex-wrap mb-8'>
                         {extraOptions.map((option) => (
                             <div
@@ -114,10 +120,7 @@ const Product = ({ pizza }) => {
                                     name={option.text}
                                     onChange={(e) => handleChange(e, option)}
                                 />
-                                <label
-                                    htmlFor={option.text}
-                                    className='text-sm'
-                                >
+                                <label htmlFor={option.text} className='text-sm'>
                                     {option.text}
                                 </label>
                             </div>
@@ -130,12 +133,29 @@ const Product = ({ pizza }) => {
                             <input
                                 type='number'
                                 defaultValue={1}
-                                onChange={(e) => setQuantity(e.target.value)}
+                                onChange={(e) => setQuantity(+e.target.value)}
                                 className='w-[70px] h-[30px] focus:border-none text-dark appearance-none'
                             />
                         </div>
-                        <button className='button ' onClick={handleAddToCart}>
-                            Add to Cart
+                        <button
+                            className={clsx(
+                                'py-2 px-4 w-48 rounded-md',
+                                !isInCart && 'bg-primary-500 hover:bg-opacity-80',
+                                isInCart && 'bg-primary-100'
+                            )}
+                            onClick={handleAddToCart}
+                        >
+                            {!isInCart ? (
+                                <div className='flex items-center justify-center'>
+                                    <FaPlus />
+                                    <span className='ml-1'>Add to Cart</span>
+                                </div>
+                            ) : (
+                                <div className='flex items-center justify-center'>
+                                    <FaMinus />
+                                    <span className='ml-1'>Remove from Cart</span>
+                                </div>
+                            )}
                         </button>
                     </div>
                 </div>
@@ -145,9 +165,7 @@ const Product = ({ pizza }) => {
 };
 
 export const getServerSideProps = async ({ params }) => {
-    const response = await axios.get(
-        `${process.env.SITE_URL}/api/products/${params.id}`
-    );
+    const response = await axios.get(`${process.env.SITE_URL}/api/products/${params.id}`);
 
     return {
         props: {

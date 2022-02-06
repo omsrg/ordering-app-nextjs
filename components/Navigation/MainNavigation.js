@@ -6,7 +6,7 @@ import NavLinks from './NavLinks';
 import { useCartContext } from '@/context/CartContext';
 
 const MainNavigation = ({ mobileNavHandler, isMenuOpen }) => {
-    const { state } = useCartContext();
+    const { quantity } = useCartContext();
 
     return (
         <header className='w-full h-[80px] fixed bg-primary-500 top-0 z-50'>
@@ -30,7 +30,7 @@ const MainNavigation = ({ mobileNavHandler, isMenuOpen }) => {
                         <UnstyledLink href='/cart'>
                             <BsCart3 className='relative text-white w-7 h-7' />
                             <span className='absolute flex items-center justify-center -top-[10px] -right-[10px] w-[20px] h-[20px] rounded-full bg-white font-bold text-primary-500'>
-                                {state.quantity}
+                                {quantity}
                             </span>
                         </UnstyledLink>
                     </div>
